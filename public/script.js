@@ -11,5 +11,24 @@ window.onload = function() {
     markdownArea.innerHTML = html;
   };
 
+  var didChangeOccur = function() {
+    if (previousMarkdownValue != pad.value) {
+      return true;
+    }
+
+    return false;
+  };
+
+  setInterval(function() {
+    if (didChangeOccur()) {
+      convertTextAreaToMarkdown();
+    }
+  }, 1000);
+
   pad.addEventListener("input", convertTextAreaToMarkdown);
+
+  sharejs.open("home", "text", function(error, doc) {
+    doc.attach_textarea(pad);
+    convertTextAreaToMarkdown();
+  });
 };
